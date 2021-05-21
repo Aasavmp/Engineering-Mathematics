@@ -6,14 +6,10 @@ from copy import deepcopy
 from scipy import integrate
 from sympy import cos, sin, pi
 from sympy.vector import ParametricRegion, vector_integrate
-x, y, z, i, j, k, t, u, v, a, b, c = sym.symbols('x y z i j k t u v a b c')
+x, y, z, i, j, k, t, u, v, a, b, c, r = sym.symbols('x y z i j k t u v a b c r')
 
 def magnitude(vector):
-    mag_squared = 0
-    for units in vector:
-        square = units*units
-        mag_squared += square
-    return math.sqrt(mag_squared)
+    return sym.sqrt(sum([i**2 for i in vector]))
 
 def magnitudealternate(vector):
     if len(vector) == 2:
@@ -54,6 +50,19 @@ def triple_matrix_det(matrix):
     array = np.array(matrix)
     det = sym.simplify(array[0,0]*((array[1,1]*array[2,2])-(array[1,2]*array[2,1])))-(array[0,1]*((array[1,0]*array[2,2])-(array[1,2]*array[2,0])))+(array[0,2]*((array[1,0]*array[2,1])-(array[1,1]*array[2,0])))
     return det
+
+def determinant(mat):
+    if len(mat) == 2:
+        c = mat[0][0]*mat[1][1]-mat[1][0]*mat[0][1]
+        return c
+    elif len(mat) == 3:
+        i = mat[1][1]*mat[2][2]-mat[1][2]*mat[2][1]
+        j = mat[1][0]*mat[2][2]-mat[1][2]*mat[2][0]
+        k = mat[1][0]*mat[2][1]-mat[1][1]*mat[2][0]
+        c = mat[0][0]*i - mat[0][1]*j + mat[0][2]*k
+        return c
+    else:
+        print('dickhead')
 
 def triple_scalar_product(vector1, vector2, vector3):  # finds volume of parallelepiped
     i = vector3[0] * ((vector1[1] * vector2[2]) - (vector1[2] * vector2[1]))
@@ -352,6 +361,14 @@ def partial_differential(term, variable):
         partial.append(sym.diff(dimension, variable))
     return partial
 
+def dA_area_elements(surface):
+    r_u = []
+    r_v = []
+    for axis in surface:
+        r_u.append(sym.diff(axis, u))
+        r_v.append(sym.diff(axis, v))
+    dA = cross_product(r_u, r_v)
+    return dA
 
 def flux_integral(vector, surface, u_bounds, v_bounds):
     r_u = vector_partial_derivative(surface, u)
@@ -368,7 +385,7 @@ def flux_integral(vector, surface, u_bounds, v_bounds):
     # v_bounds = [-1, 1]
 
 
-def scalar_surface_integral(vector_field, surface, u_bounds, v_bounds):
+def scalar_surface_integral(surface, vector_field, u_bounds, v_bounds):
     region = ParametricRegion((surface[0], surface[1], surface[2]), (u, u_bounds[0], u_bounds[1]),
                                   (v, v_bounds[0], v_bounds[1]))
     surface_integral = vector_integrate(vector_field, region)
@@ -378,6 +395,8 @@ def scalar_surface_integral(vector_field, surface, u_bounds, v_bounds):
     # vector_field = 3*cos(u)
     # u_bounds = [0, pi/2]
     # v_bounds = [0, 2*pi]
+
+
 
 
 def stokes(line_c, vector_field, u_bounds, v_bounds):
@@ -392,10 +411,29 @@ def stokes(line_c, vector_field, u_bounds, v_bounds):
     r_v = partial_differential(line_c, v)
 
     dA = cross_product(r_u, r_v)
+    print(dA)
     integral = dot_product(curl_parametrised, dA)
 
     solution = double_integral(integral, u, u_bounds, v, v_bounds)
     return solution
+
+def gauss(vector_field, r_bounds, u_bounds, v_bounds, parameterised):
+    div = divergent(vector_field)
+    print(div)
+    subs = div.subs({x: parameterised[0], y: parameterised[1], z: parameterised[2]})
+    simplified = sym.simplify(subs)
+    changed = jacobian(parameterised, [r, u, v])
+    integral = simplified * changed
+    print(integral)
+    ans = sym.integrate(integral, (r, r_bounds[0], r_bounds[1]), (u, u_bounds[0], u_bounds[1]),
+                        (v, v_bounds[0], v_bounds[1]))
+    return ans
+    # example : this is for spherical polar co-ordinates
+    # r_bounds = [0, 1]
+    # u_bounds = [0, pi]
+    # v_bounds = [0, 2*pi]
+    # vector_field = [x*y**2, y*cos(z)+y*z**2, x**2*z-sin(z)]
+    # parameterised = [r * sin(u) * cos(v), r * sin(u) * sin(v), r * cos(u)]
 
 
 def jacobian(X,Y,Z,variables):
