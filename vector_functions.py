@@ -362,27 +362,36 @@ def partial_differential(term, variable):
     return partial
 
 def dA_area_elements(surface):
-    r_u = []
-    r_v = []
-    for axis in surface:
-        r_u.append(sym.diff(axis, u))
-        r_v.append(sym.diff(axis, v))
-    dA = cross_product(r_u, r_v)
-    return dA
+    du = [sym.diff(surface[i], u) for i, _ in enumerate(surface)]
+    dv = [sym.diff(surface[i], v) for i, _ in enumerate(surface)]
+    return cross_product(du, dv)
 
-def flux_integral(vector, surface, u_bounds, v_bounds):
-    r_u = vector_partial_derivative(surface, u)
-    r_v = vector_partial_derivative(surface, v)
+def flux_integral(vector, surface_param, u_bounds, v_bounds, direction = 'positive'):
+    r_u = vector_partial_derivative(surface_param, u)
+    r_v = vector_partial_derivative(surface_param, v)
 
-    dA = cross_product(r_u, r_v)
-    integral = dot_product(vector, dA)
+    print(r_u)
+    print(r_v)
+
+    vector_parametrised = []
+    for variable in vector:
+        vector_parametrised.append(variable.subs({x: surface_param[0], y: surface_param[1], z: surface_param[2]}))
+
+    if direction == 'negative':
+        dA = cross_product(r_v, r_u)
+    else:
+        dA = cross_product(r_u, r_v)
+    print(dA)
+    integral = dot_product(vector_parametrised, dA)
+    print(integral)
     flux = double_integral(integral, u, u_bounds, v, v_bounds)
     return flux
     # example formatting
-    # vector = [3*u**2, v**2, 0]
-    # surface = [u, v, 2*u + 3*v]
-    # u_bounds = [0, 2]
-    # v_bounds = [-1, 1]
+    # vector = [x*y, x*y, z]
+    # surface_param = [u*cos(v), u*sin(v), u]
+    # u_bounds = [0, 1]
+    # v_bounds = [0, 2*pi]
+    # direction = 'negative' (only use this if you need to switch the direction of the flux, NB figure this out using a 3D plotter)
 
 
 def scalar_surface_integral(surface, vector_field, u_bounds, v_bounds):
@@ -403,9 +412,10 @@ def stokes(line_c, vector_field, u_bounds, v_bounds):
     curl_xyz = curl(vector_field)
     print(curl_xyz)
     curl_parametrised = []
+
     for variable in curl_xyz:
         curl_parametrised.append(variable.subs({x: line_c[0], y: line_c[1], z: line_c[2]}))
-        #check the z: line_c[0] is actually meant to be zero or two
+
     print(curl_parametrised)
     r_u = partial_differential(line_c, u)
     r_v = partial_differential(line_c, v)
