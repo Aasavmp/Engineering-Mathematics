@@ -394,6 +394,7 @@ def flux_integral(vector, surface_param, u_bounds, v_bounds, direction = 'positi
     # direction = 'negative' (only use this if you need to switch the direction of the flux, NB figure this out using a 3D plotter)
 
 
+
 def scalar_surface_integral(surface, vector_field, u_bounds, v_bounds):
     region = ParametricRegion((surface[0], surface[1], surface[2]), (u, u_bounds[0], u_bounds[1]),
                                   (v, v_bounds[0], v_bounds[1]))
