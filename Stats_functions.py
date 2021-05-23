@@ -5,6 +5,8 @@ import math
 
 from random import choices
 from sympy import binomial, Eq, solve, symbols
+from sympy import pprint, init_printing
+init_printing()
 
 a, b = symbols('a, b')
 

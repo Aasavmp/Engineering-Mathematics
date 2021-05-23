@@ -26,9 +26,9 @@ period = L
 #              u_t: {"term": 'u_t', "variable": t, "values": {0: function}}
 #              }
 
-conditions = {X: {"term": 'X', "variable": x, "values": {0: 0},
+conditions = {X: {"term": 'X', "variable": None},
               T: {"term": 'T', "variable": t, "values": {0: function}},  # t, "values": {0: 0}},
-              u_x: {"term": 'u_x', "variable": x, "values": {L: 0}},
+              u_x: {"term": 'u_x', "variable": x, "values": {0: 0, L: 0}},
               u_t: {"term": 'u_t', "variable": None}  # t, "values": {0: sin(x)}}
               }
 

@@ -1,10 +1,10 @@
 from scipy.optimize import fsolve
-
-import Stats_functions
+import Stats_functions as st
 from vector_functions import *
 import vector_functions as vt
 from Stats_functions import *
 import partial_differentiation_functions as pdf
+from partial_differentiation_functions import *
 import math
 import sympy as sym
 import numpy as np
@@ -35,4 +35,19 @@ function = lambda x: (2*(-1)**(x+1))/((x*pi)) if x != 0 else 0
 #pprint(Stats_functions.t_statistic(5.006, 5.105, sqrt(0.124), 50))
 
 
-pprint(vt.flux_integral([x*y, x*y, z], [u*cos(v), u*sin(v), u], [0, 1], [0, 2*pi], direction = 'negative'))
+#pprint(vt.flux_integral([x*y, x*y, z], [u*cos(v), u*sin(v), u], [0, 1], [0, 2*pi], direction = 'negative'))
+
+#pprint(pdf.initial_value_problems_laplace([1, 2, 10], 10*exp(-2*t), 2, 3))
+
+#pprint(flux_integral([x*exp(y), y*exp(x), x**2], [u*cos(v), u*sin(v), 0], [0, 1], [0, 2*pi]))
+
+#pprint(triple_integral(r, [r, theta, z], [0, 1], [0, 2*pi], [-1, 1]))
+
+#pprint(pdf.half_range_sine_series_continuous(t/pi, pi, t))
+
+# pprint(Stats_functions.goodness_of_fit([873, 77, 50], [821, 162, 17], 0.05, 1))
+
+v = [(-y)/(x**2+y**2), (x)/(x**2+y**2), 0]
+
+pprint(divergent(v))
+pprint((curl(v)))

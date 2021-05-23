@@ -3,6 +3,9 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 from sympy import cos, sin, pi, sympify, exp
+from sympy import pprint, init_printing
+init_printing()
+
 x, y, z, i, j, k, t, u, v, r, a, b, c, n, L, w, T, s \
     = sym.symbols('x y z i j k t u v r a b c n L w T s')
 A = sym.symbols('A', real=True, positive=True)
@@ -248,9 +251,11 @@ def initial_value_problems_laplace(pde, right_side, x_0, x_1):
     df2 = s**2*F - s*x_0 - x_1
     df1 = s*F - x_0
     s_domain = laplace_transform(right_side)
+    print(s_domain)
     transfer = pde[0] * df2 + pde[1] * df1 + pde[2] * F - s_domain
+    print(transfer)
     ans = sym.solve(transfer, F)
-    print(ans)
+    pprint(ans)
     function = inverse_laplace_transform(ans[0])
     print(function.evalf().simplify())
     return function

@@ -6,6 +6,9 @@ from copy import deepcopy
 from scipy import integrate
 from sympy import cos, sin, pi
 from sympy.vector import ParametricRegion, vector_integrate
+from sympy import pprint, init_printing
+init_printing()
+
 x, y, z, i, j, k, t, u, v, a, b, c, r = sym.symbols('x y z i j k t u v a b c r')
 
 def magnitude(vector):
