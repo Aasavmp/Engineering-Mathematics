@@ -422,7 +422,7 @@ def gauss(vector_field, r_bounds, u_bounds, v_bounds, parameterised):
     print(div)
     subs = div.subs({x: parameterised[0], y: parameterised[1], z: parameterised[2]})
     simplified = sym.simplify(subs)
-    changed = jacobian(parameterised, [r, u, v])
+    changed = jacobian(parameterised[0], parameterised[1], parameterised[2], [r, u, v])
     integral = simplified * changed
     print(integral)
     ans = sym.integrate(integral, (r, r_bounds[0], r_bounds[1]), (u, u_bounds[0], u_bounds[1]),
