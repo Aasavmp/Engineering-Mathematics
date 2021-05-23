@@ -64,6 +64,7 @@ def determinant(mat):
     else:
         print('dickhead')
 
+
 def triple_scalar_product(vector1, vector2, vector3):  # finds volume of parallelepiped
     i = vector3[0] * ((vector1[1] * vector2[2]) - (vector1[2] * vector2[1]))
     j = vector3[1] * ((vector1[2] * vector2[0]) - (vector1[0] * vector2[2]))
@@ -104,6 +105,7 @@ def three_dimensional_gradient(function):
     gradient = [diff_x, diff_y, diff_z]
     return gradient
 
+
 def vector_partial_derivative(function,wrt):
     if len(function) == 2:
         diff_x = sym.diff(function[0], wrt)
@@ -117,6 +119,7 @@ def vector_partial_derivative(function,wrt):
         diff_z = sym.diff(function[2], wrt)
         gradient = [diff_x, diff_y, diff_z]
         return gradient
+
 
 def grad(function, dimensions):
     if dimensions == 2:
@@ -334,10 +337,12 @@ def double_integral(function, variable_1, bounds_1, variable_2, bounds_2):
     # x_bounds = [y**2, y]
     # y_bounds = [0, 1]
 
+
 def separable_double_integral(function_1, variable_1, bounds_1, function_2, variable_2, bounds_2):
     integral1 = sym.integrate(function_1, (variable_1, bounds_1[0], bounds_1[1]))
     integral2 = sym.integrate(function_2,(variable_2, bounds_2[0], bounds_2[1]))
     return integral1*integral2
+
 
 def triple_integral(function, order_of_xyz, first_bounds, second_bounds, third_bounds):
     return sym.integrate(function, (order_of_xyz[0], first_bounds[0], first_bounds[1]), (order_of_xyz[1], second_bounds[0], second_bounds[1]),
@@ -349,11 +354,13 @@ def triple_integral(function, order_of_xyz, first_bounds, second_bounds, third_b
     # second_bonds = [0, sym.pi * 2]
     # third_bonds = [0, 3]
 
+
 def separable_triple_integral(function_x, function_y, function_z, order_of_xyz, x_bounds, y_bounds, z_bounds):
     integral1 = sym.integrate(function_x, (order_of_xyz[0], x_bounds[0], x_bounds[1]))
     integral2 = sym.integrate(function_y, (order_of_xyz[1], y_bounds[0], y_bounds[1]))
     integral3 = sym.integrate(function_z, (order_of_xyz[2], z_bounds[0], z_bounds[1]))
     return integral1 * integral2 * integral3
+
 
 def partial_differential(term, variable):
     partial = []
@@ -361,10 +368,12 @@ def partial_differential(term, variable):
         partial.append(sym.diff(dimension, variable))
     return partial
 
+
 def dA_area_elements(surface):
     du = [sym.diff(surface[i], u) for i, _ in enumerate(surface)]
     dv = [sym.diff(surface[i], v) for i, _ in enumerate(surface)]
     return cross_product(du, dv)
+
 
 def flux_integral(vector, surface_param, u_bounds, v_bounds, direction = 'positive'):
     r_u = vector_partial_derivative(surface_param, u)
@@ -394,7 +403,6 @@ def flux_integral(vector, surface_param, u_bounds, v_bounds, direction = 'positi
     # direction = 'negative' (only use this if you need to switch the direction of the flux, NB figure this out using a 3D plotter)
 
 
-
 def scalar_surface_integral(surface, vector_field, u_bounds, v_bounds):
     region = ParametricRegion((surface[0], surface[1], surface[2]), (u, u_bounds[0], u_bounds[1]),
                                   (v, v_bounds[0], v_bounds[1]))
@@ -405,7 +413,6 @@ def scalar_surface_integral(surface, vector_field, u_bounds, v_bounds):
     # vector_field = 3*cos(u)
     # u_bounds = [0, pi/2]
     # v_bounds = [0, 2*pi]
-
 
 
 def stokes(line_c, vector_field, u_bounds, v_bounds):
@@ -426,6 +433,7 @@ def stokes(line_c, vector_field, u_bounds, v_bounds):
 
     solution = double_integral(integral, u, u_bounds, v, v_bounds)
     return solution
+
 
 def gauss(vector_field, r_bounds, u_bounds, v_bounds, parameterised):
     div = divergent(vector_field)
@@ -461,4 +469,3 @@ def jacobian(X,Y,Z,variables):
     det = triple_matrix_det(array)
     det_1 = sym.simplify(det)
     return det_1
-
