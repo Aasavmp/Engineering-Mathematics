@@ -407,7 +407,6 @@ def scalar_surface_integral(surface, vector_field, u_bounds, v_bounds):
 
 
 
-
 def stokes(line_c, vector_field, u_bounds, v_bounds):
     curl_xyz = curl(vector_field)
     print(curl_xyz)
