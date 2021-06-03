@@ -323,12 +323,13 @@ def work_integral(integral, parametrised_function, bounds):
     diff_r = []
     for term in parametrised_function:
         diff_r.append(sym.diff(term, t))
+    print(diff_r)
     work = dot_product(diff_r, integral)
     integralx = work.subs(x, parametrised_function[0])
     integralxy = integralx.subs(y, parametrised_function[1])
-    #integralxyz = integralxy.subs(z, parametrised_function[2])
-    s = sym.Integral(integralxy, (t, bounds[0], bounds[1])).evalf()
-    print('integrate ',integralxy,' between ',bounds[0],' and ',bounds[1])
+    integralxyz = integralxy.subs(z, parametrised_function[2])
+    s = sym.Integral(integralxyz, (t, bounds[0], bounds[1])).evalf()
+    print('integrate ',integralxyz,' between ',bounds[0],' and ',bounds[1])
     return s
 
 
